@@ -22,11 +22,21 @@ func NewRouter(crs *controllers.Controllers) *gin.Engine {
 		{
 			playlists := v1.Group("/playlists")
 			{
-				playlists.GET("/", crs.PlaylistController)
-				playlists.POST("/")
-				playlists.GET("/:playlistId")
-				playlists.PUT("/:playlistId")
-				playlists.DELETE(":/playlistId")
+				playlists.GET("/", crs.PlaylistController.GetAll)
+				playlists.POST("/", crs.PlaylistController.Create)
+				playlists.POST("/addSong")
+				playlists.GET("/:playlistId", crs.PlaylistController.GetById)
+				playlists.PUT("/:playlistId", crs.PlaylistController.Update)
+				playlists.DELETE(":/playlistId", crs.PlaylistController.Delete)
+			}
+
+			songs := v1.Group("/songs")
+			{
+				songs.GET("/", crs.SongController.GetAll)
+				songs.POST("/", crs.SongController.Create)
+				songs.GET("/:songId", crs.SongController.GetById)
+				songs.PUT("/:songId", crs.SongController.Update)
+				songs.DELETE(":/songId", crs.SongController.Delete)
 			}
 		}
 	}

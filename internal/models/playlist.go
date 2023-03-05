@@ -1,10 +1,12 @@
 package models
 
-import "time"
+import (
+	"gorm.io/gorm"
+)
 
 type Playlist struct {
-	ID        int64     `json:"id"`
-	Name      string    `json:"name"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	gorm.Model
+	ID    uint   `gorm:"primarykey"`
+	Name  string `json:"name" gorm:"not null"`
+	Songs []Song `json:"songs" gorm:"many2many:playlist_songs"`
 }

@@ -24,10 +24,10 @@ func NewRouter(crs *controllers.Controllers) *gin.Engine {
 			{
 				playlists.GET("/", crs.PlaylistController.GetAll)
 				playlists.POST("/", crs.PlaylistController.Create)
-				playlists.POST("/addSong")
+				playlists.POST("/:playlistID/songs/:songId", crs.PlaylistController.AddSong)
 				playlists.GET("/:playlistId", crs.PlaylistController.GetById)
 				playlists.PUT("/:playlistId", crs.PlaylistController.Update)
-				playlists.DELETE(":/playlistId", crs.PlaylistController.Delete)
+				playlists.DELETE("/:playlistId", crs.PlaylistController.Delete)
 			}
 
 			songs := v1.Group("/songs")
@@ -36,7 +36,7 @@ func NewRouter(crs *controllers.Controllers) *gin.Engine {
 				songs.POST("/", crs.SongController.Create)
 				songs.GET("/:songId", crs.SongController.GetById)
 				songs.PUT("/:songId", crs.SongController.Update)
-				songs.DELETE(":/songId", crs.SongController.Delete)
+				songs.DELETE("/:songId", crs.SongController.Delete)
 			}
 		}
 	}

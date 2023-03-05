@@ -17,8 +17,12 @@ func (s *Service) GetAllPlaylists() ([]models.Playlist, error) {
 	return s.repo.GetAll()
 }
 
-func (s *Service) GetPlaylistByID(id int64) (*models.Playlist, error) {
+func (s *Service) GetPlaylistByID(id uint) (*models.Playlist, error) {
 	return s.repo.GetByID(id)
+}
+
+func (s *Service) AddSong(playlist *models.Playlist, song *models.Song) error {
+	return s.repo.AddSong(playlist, song)
 }
 
 func (s *Service) CreatePlaylist(playlist *models.Playlist) error {
@@ -29,6 +33,6 @@ func (s *Service) UpdatePlaylist(playlist *models.Playlist) error {
 	return s.repo.Update(playlist)
 }
 
-func (s *Service) DeletePlaylist(id int64) error {
+func (s *Service) DeletePlaylist(id uint) error {
 	return s.repo.Delete(id)
 }

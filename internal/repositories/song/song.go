@@ -1,8 +1,8 @@
 package song
 
 import (
-	"github.com/jinzhu/gorm"
 	"gitlab.com/sb-cloud/player-ms-api/internal/models"
+	"gorm.io/gorm"
 )
 
 type SongRepository struct {
@@ -13,32 +13,32 @@ func NewSongRepository(db *gorm.DB) *SongRepository {
 	return &SongRepository{db: db}
 }
 
-func (r *SongRepository) GetAll() ([]models.Playlist, error) {
-	var playlists []models.Playlist
-	err := r.db.Find(&playlists).Error
+func (r *SongRepository) GetAll() ([]models.Song, error) {
+	var songs []models.Song
+	err := r.db.Find(&songs).Error
 	if err != nil {
 		return nil, err
 	}
-	return playlists, nil
+	return songs, nil
 }
 
-func (r *SongRepository) GetByID(id int64) (*models.Playlist, error) {
-	var playlist models.Playlist
-	err := r.db.First(&playlist, id).Error
+func (r *SongRepository) GetByID(id uint) (*models.Song, error) {
+	var song models.Song
+	err := r.db.First(&song, id).Error
 	if err != nil {
 		return nil, err
 	}
-	return &playlist, nil
+	return &song, nil
 }
 
-func (r *SongRepository) Create(playlist *models.Playlist) error {
-	return r.db.Create(playlist).Error
+func (r *SongRepository) Create(song *models.Song) error {
+	return r.db.Create(song).Error
 }
 
-func (r *SongRepository) Update(playlist *models.Playlist) error {
-	return r.db.Save(playlist).Error
+func (r *SongRepository) Update(song *models.Song) error {
+	return r.db.Save(song).Error
 }
 
-func (r *SongRepository) Delete(id int64) error {
-	return r.db.Delete(&models.Playlist{ID: id}).Error
+func (r *SongRepository) Delete(id uint) error {
+	return r.db.Delete(&models.Song{ID: id}).Error
 }

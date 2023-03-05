@@ -1,35 +1,28 @@
-package api
+package main
 
 import (
-	"fmt"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"gitlab.com/sb-cloud/player-ms-api/api/controllers"
 	"gitlab.com/sb-cloud/player-ms-api/api/router"
 	"gitlab.com/sb-cloud/player-ms-api/internal/config"
+	"gitlab.com/sb-cloud/player-ms-api/internal/models"
 	repositories "gitlab.com/sb-cloud/player-ms-api/internal/repositories"
 	"gitlab.com/sb-cloud/player-ms-api/internal/services"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 	"log"
-	"net/url"
 )
 
 func main() {
 	cfg, _ := config.New()
 
-	dsn := url.URL{
-		User:     url.UserPassword(cfg.PostgresUser, cfg.PostgresPassword),
-		Scheme:   "postgres",
-		Host:     fmt.Sprintf("%s:%d", cfg.PostgresHost, cfg.PostgresPort),
-		Path:     cfg.PostgresDB,
-		RawQuery: (&url.Values{"sslmode": []string{"disable"}}).Encode(),
-	}
-
-	db, err := gorm.Open("postgres", dsn)
+	db, err := gorm.Open(postgres.Open(cfg.PostgresDSN), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	defer db.Close()
+	if err := db.AutoMigrate(&models.Playlist{}, &models.Song{}); err != nil {
+		log.Fatalln(err)
+	}
 
 	repos := repositories.InitRepositories(db)
 	serv := services.InitServices(repos)

@@ -13,22 +13,22 @@ func NewPlaylistService(repo *song.SongRepository) *Service {
 	return &Service{repo: repo}
 }
 
-func (s *Service) GetAllSongs() ([]models.Playlist, error) {
+func (s *Service) GetAllSongs() ([]models.Song, error) {
 	return s.repo.GetAll()
 }
 
-func (s *Service) GetSongByID(id int64) (*models.Playlist, error) {
+func (s *Service) GetSongByID(id uint) (*models.Song, error) {
 	return s.repo.GetByID(id)
 }
 
-func (s *Service) CreateSong(song *models.Playlist) error {
+func (s *Service) CreateSong(song *models.Song) error {
 	return s.repo.Create(song)
 }
 
-func (s *Service) UpdateSong(song *models.Playlist) error {
+func (s *Service) UpdateSong(song *models.Song) error {
 	return s.repo.Update(song)
 }
 
-func (s *Service) DeleteSong(id int64) error {
+func (s *Service) DeleteSong(id uint) error {
 	return s.repo.Delete(id)
 }

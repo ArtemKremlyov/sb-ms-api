@@ -1,9 +1,9 @@
 package repositories
 
 import (
-	"github.com/jinzhu/gorm"
 	playlist "gitlab.com/sb-cloud/player-ms-api/internal/repositories/playlist"
 	"gitlab.com/sb-cloud/player-ms-api/internal/repositories/song"
+	"gorm.io/gorm"
 )
 
 type Repositories struct {

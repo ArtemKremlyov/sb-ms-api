@@ -13,7 +13,7 @@ type Controllers struct {
 
 func InitControllers(s *services.Services) *Controllers {
 	return &Controllers{
-		PlaylistController: playlist.NewPlaylistController(s.PlaylistService),
+		PlaylistController: playlist.NewPlaylistController(s.PlaylistService, s.SongService),
 		SongController:     song.NewSongController(s.SongService),
 	}
 }

@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"github.com/jinzhu/gorm"
 	"gitlab.com/sb-cloud/player-ms-api/internal/models"
+	"gorm.io/gorm"
 )
 
 type PlaylistRepository struct {
@@ -22,13 +22,17 @@ func (r *PlaylistRepository) GetAll() ([]models.Playlist, error) {
 	return playlists, nil
 }
 
-func (r *PlaylistRepository) GetByID(id int64) (*models.Playlist, error) {
+func (r *PlaylistRepository) GetByID(id uint) (*models.Playlist, error) {
 	var playlist models.Playlist
 	err := r.db.First(&playlist, id).Error
 	if err != nil {
 		return nil, err
 	}
 	return &playlist, nil
+}
+
+func (r *PlaylistRepository) AddSong(playlist *models.Playlist, song *models.Song) error {
+	return r.db.Model(playlist).Association("Songs").Append(song)
 }
 
 func (r *PlaylistRepository) Create(playlist *models.Playlist) error {
@@ -39,6 +43,6 @@ func (r *PlaylistRepository) Update(playlist *models.Playlist) error {
 	return r.db.Save(playlist).Error
 }
 
-func (r *PlaylistRepository) Delete(id int64) error {
+func (r *PlaylistRepository) Delete(id uint) error {
 	return r.db.Delete(&models.Playlist{ID: id}).Error
 }

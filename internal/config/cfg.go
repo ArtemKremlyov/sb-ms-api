@@ -1,30 +1,19 @@
 package config
 
-import (
-	"github.com/joho/godotenv"
-	_ "github.com/joho/godotenv"
-	"github.com/kelseyhightower/envconfig"
-)
+import "github.com/caarlos0/env/v6"
 
 type Config struct {
-	PostgresUser     string `envconfig:POSTGRES_USER`
-	PostgresPassword string `envconfig:POSTGRES_PASSWORD`
-	PostgresPort     string `envconfig:POSTGRES_PORT`
-	PostgresHost     string `envconfig:POSTGRES_HOST`
-	PostgresDB       string `envconfig:POSTGRES_DB`
-	ServerHTTPPort   string `envconfig:"SERVER_HTTP_PORT" default:"8080"`
+	PostgresDSN    string `env:"POSTGRES_DSN,notEmpty"`
+	ServerHTTPPort string `env:"SERVER_HTTP_PORT" envDefault:":8080"`
 }
 
 func New() (*Config, error) {
-	err := godotenv.Load(".env")
-	if err != nil {
+	cfg := &Config{}
+
+	// Заполним структуру env переменными.
+	if err := env.Parse(cfg); err != nil {
 		return nil, err
 	}
 
-	var c Config
-	err = envconfig.Process("", &c)
-	if err != nil {
-		return nil, err
-	}
-	return &c, nil
+	return cfg, nil
 }

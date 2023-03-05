@@ -2,20 +2,23 @@ package playlist
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 	"gitlab.com/sb-cloud/player-ms-api/internal/models"
 	"gitlab.com/sb-cloud/player-ms-api/internal/services/playlist"
+	"gitlab.com/sb-cloud/player-ms-api/internal/services/song"
+	"gorm.io/gorm"
 	"net/http"
 	"strconv"
 )
 
 type Controller struct {
 	playlistService playlist.Service
+	songService     song.Service
 }
 
-func NewPlaylistController(s *playlist.Service) *Controller {
+func NewPlaylistController(p *playlist.Service, s *song.Service) *Controller {
 	return &Controller{
-		playlistService: *s,
+		playlistService: *p,
+		songService:     *s,
 	}
 }
 
@@ -34,7 +37,7 @@ func (c *Controller) GetAll(ctx *gin.Context) {
 }
 
 func (c *Controller) GetById(ctx *gin.Context) {
-	id, err := strconv.Atoi(ctx.Param("id"))
+	id, err := strconv.Atoi(ctx.Param("playlistId"))
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -43,7 +46,7 @@ func (c *Controller) GetById(ctx *gin.Context) {
 		return
 	}
 
-	playlistByID, err := c.playlistService.GetPlaylistByID(int64(id))
+	playlistByID, err := c.playlistService.GetPlaylistByID(uint(id))
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -58,6 +61,51 @@ func (c *Controller) GetById(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, playlistByID)
+}
+
+func (c *Controller) AddSong(ctx *gin.Context) {
+	playlistID, err := strconv.Atoi(ctx.Param("playlistId"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid playlist ID"})
+		return
+	}
+
+	// получить идентификатор песни из URL-параметра
+	songID, err := strconv.Atoi(ctx.Param("songId"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid song ID"})
+		return
+	}
+
+	playlistById, err := c.playlistService.GetPlaylistByID(uint(playlistID))
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "playlist not found"})
+			return
+		} else {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to find playlist"})
+			return
+		}
+	}
+
+	songById, err := c.songService.GetSongByID(uint(songID))
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "song not found"})
+			return
+		} else {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to find song"})
+			return
+		}
+	}
+
+	err = c.playlistService.AddSong(playlistById, songById)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to append song to playlist"})
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{})
 }
 
 func (c *Controller) Create(ctx *gin.Context) {
@@ -80,7 +128,7 @@ func (c *Controller) Create(ctx *gin.Context) {
 }
 
 func (c *Controller) Update(ctx *gin.Context) {
-	id, err := strconv.Atoi(ctx.Param("id"))
+	id, err := strconv.Atoi(ctx.Param("playlistId"))
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -96,7 +144,7 @@ func (c *Controller) Update(ctx *gin.Context) {
 		})
 		return
 	}
-	cPlaylist.ID = int64(id)
+	cPlaylist.ID = uint(id)
 	err = c.playlistService.UpdatePlaylist(&cPlaylist)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
@@ -114,7 +162,7 @@ func (c *Controller) Update(ctx *gin.Context) {
 }
 
 func (c *Controller) Delete(ctx *gin.Context) {
-	id, err := strconv.Atoi(ctx.Param("id"))
+	id, err := strconv.Atoi(ctx.Param("playlistId"))
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -123,7 +171,7 @@ func (c *Controller) Delete(ctx *gin.Context) {
 		return
 	}
 
-	err = c.playlistService.DeletePlaylist(int64(id))
+	err = c.playlistService.DeletePlaylist(uint(id))
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "playlist not found"})
@@ -133,4 +181,6 @@ func (c *Controller) Delete(ctx *gin.Context) {
 			return
 		}
 	}
+
+	ctx.JSON(http.StatusAccepted, gin.H{})
 }

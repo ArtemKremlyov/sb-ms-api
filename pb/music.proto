@@ -1,0 +1,115 @@
+syntax = "proto3";
+package articles;
+option go_package = "sb-cloud/player-ms-api";
+
+
+import "google/protobuf/empty.proto";
+import "google/api/validate.proto";
+import "google/protobuf/duration.proto";
+
+
+// Playlist
+
+message Playlist {
+    int64 ID = 1 [(validate.rules).int64.gt = 0];
+    string    Name = 2 [(validate.rules).string.min_len = 1];
+    int64    CreatedAt = 3 [(validate.rules).message.required = true];
+    int64 UpdatedAt =  4 [(validate.rules).message.required = true];
+}
+
+message PlaylistAll {
+  repeated  Playlist data = 1;
+}
+
+message    GetByIdPlaylistRequest{
+  int64 ID = 1 [(validate.rules).int64.gt =0];
+}
+
+message CreatePlaylistRequest{
+  string    Name = 1 [(validate.rules).string.min_len = 1];
+  int64    CreatedAt = 2 [(validate.rules).message.required = true];
+  int64 UpdatedAt =  3 [(validate.rules).message.required = true];
+}
+
+message UpdatePlaylistRequest{
+  int64 ID = 1 [(validate.rules).int64.gt =0];
+  string    Name = 2 [(validate.rules).string.min_len = 1];
+  int64    CreatedAt = 3 [(validate.rules).message.required = true];
+  int64 UpdatedAt =  4 [(validate.rules).message.required = true];
+}
+
+message  DeletePlaylistRequest{
+  int64 ID = 1 [(validate.rules).int64.gt =0];
+}
+
+// Song
+message Song {
+  int64 ID = 1 [(validate.rules).int64.gt = 0];
+  string    Name = 2 [(validate.rules).string.min_len = 1];
+  string Description = 3 [(validate.rules).string.min_len = 1];
+  google.protobuf.Duration Duration = 4 [(validate.rules).message.required = true];
+  int64    CreatedAt = 5 [(validate.rules).message.required = true];
+  int64 UpdatedAt =  6 [(validate.rules).message.required = true];
+}
+
+
+message SongAll {
+  repeated  Song data = 1;
+}
+
+message    GetByIdSongRequest{
+  int64 ID = 1 [(validate.rules).int64.gt =0];
+}
+
+message CreateSongRequest{
+  string    Name = 1 [(validate.rules).string.min_len = 1];
+  int64    CreatedAt = 2 [(validate.rules).message.required = true];
+  int64 UpdatedAt =  3 [(validate.rules).message.required = true];
+}
+
+message UpdateSongRequest{
+  int64 ID = 1 [(validate.rules).int64.gt =0];
+  string    Name = 2 [(validate.rules).string.min_len = 1];
+  int64    CreatedAt = 3 [(validate.rules).message.required = true];
+  int64 UpdatedAt =  4 [(validate.rules).message.required = true];
+}
+
+message  DeleteSongRequest{
+  int64 ID = 1 [(validate.rules).int64.gt =0];
+}
+
+service MusicService {
+  // Возвращает список плейлистов
+  rpc GetAllPlaylist(google.protobuf.Empty) returns(PlaylistAll);
+
+  // Получает плейлист по Id
+  rpc GetByIdPlaylist(GetByIdPlaylistRequest) returns(Playlist);
+
+  // Создает плейлист
+  rpc CreatePlaylist(CreatePlaylistRequest) returns(google.protobuf.Empty);
+
+  // Обновляет плейлист
+  rpc UpdatePlaylist(UpdatePlaylistRequest) returns(Playlist);
+
+  rpc DeletePlaylist(DeletePlaylistRequest) returns(google.protobuf.Empty);
+
+
+  // Возвращает список песен
+  rpc GetAllSong(google.protobuf.Empty) returns(SongAll);
+
+  // Получает песню по Id
+  rpc GetByIdSong(GetByIdSongRequest) returns(Song);
+
+  // Создает песню
+  rpc CreateSong(CreateSongRequest) returns(google.protobuf.Empty);
+
+  // Обновляет песню
+  rpc UpdateSong(UpdateSongRequest) returns(Song);
+
+  // Удаляет
+  rpc DeleteSong(DeleteSongRequest) returns(google.protobuf.Empty);
+
+}
+
+
+

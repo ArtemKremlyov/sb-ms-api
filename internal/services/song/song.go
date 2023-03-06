@@ -2,14 +2,21 @@ package song
 
 import (
 	"gitlab.com/sb-cloud/player-ms-api/internal/models"
-	"gitlab.com/sb-cloud/player-ms-api/internal/repositories/song"
 )
 
-type Service struct {
-	repo *song.SongRepository
+type Repository interface {
+	GetAll() ([]models.Song, error)
+	GetByID(id uint) (*models.Song, error)
+	Create(song *models.Song) error
+	Update(song *models.Song) error
+	Delete(id uint) error
 }
 
-func NewPlaylistService(repo *song.SongRepository) *Service {
+type Service struct {
+	repo Repository
+}
+
+func NewPlaylistService(repo Repository) *Service {
 	return &Service{repo: repo}
 }
 

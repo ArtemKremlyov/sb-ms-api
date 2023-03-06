@@ -3,9 +3,9 @@ services:
   pg:
     image: postgres:13.3
     environment:
-      POSTGRES_DB: "db"
-      POSTGRES_USER: "admin"
-      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     networks:
@@ -14,12 +14,18 @@ services:
     build:
       context: ./
       dockerfile: ./Dockerfile
+      args:
+        SERVER_HTTP_PORT: ${SERVER_HTTP_PORT}
+        POSTGRES_DB: ${POSTGRES_DB}
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PORT: ${POSTGRES_PORT}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     networks:
       - api
     depends_on:
       - pg
     ports:
-      - "8080:8080"
+      - "${SERVER_HTTP_PORT}:${SERVER_HTTP_PORT}"
     tty: true
 networks:
   api:

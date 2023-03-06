@@ -29,7 +29,8 @@ func main() {
 	controlls := controllers.InitControllers(serv)
 
 	router := router.NewRouter(controlls)
-	err = router.Run(cfg.ServerHTTPPort)
+	log.Println("HTTP_PORT is: " + cfg.ServerHTTPPort)
+	err = router.Run(":" + cfg.ServerHTTPPort)
 	if err != nil {
 		return
 	}

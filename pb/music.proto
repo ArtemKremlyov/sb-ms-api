@@ -11,7 +11,7 @@ import "google/protobuf/duration.proto";
 // Playlist
 
 message Playlist {
-    int64 ID = 1 [(validate.rules).int64.gt = 0];
+    uint64 ID = 1 [(validate.rules).uint64.gt = 0];
     string    Name = 2 [(validate.rules).string.min_len = 1];
     int64    CreatedAt = 3 [(validate.rules).message.required = true];
     int64 UpdatedAt =  4 [(validate.rules).message.required = true];
@@ -22,7 +22,7 @@ message PlaylistAll {
 }
 
 message    GetByIdPlaylistRequest{
-  int64 ID = 1 [(validate.rules).int64.gt =0];
+  uint64 ID = 1 [(validate.rules).uint64.gt =0];
 }
 
 message CreatePlaylistRequest{
@@ -32,19 +32,19 @@ message CreatePlaylistRequest{
 }
 
 message UpdatePlaylistRequest{
-  int64 ID = 1 [(validate.rules).int64.gt =0];
+  uint64 ID = 1 [(validate.rules).uint64.gt =0];
   string    Name = 2 [(validate.rules).string.min_len = 1];
   int64    CreatedAt = 3 [(validate.rules).message.required = true];
   int64 UpdatedAt =  4 [(validate.rules).message.required = true];
 }
 
 message  DeletePlaylistRequest{
-  int64 ID = 1 [(validate.rules).int64.gt =0];
+  uint64 ID = 1 [(validate.rules).uint64.gt =0];
 }
 
 // Song
 message Song {
-  int64 ID = 1 [(validate.rules).int64.gt = 0];
+  uint64 ID = 1 [(validate.rules).uint64.gt = 0];
   string    Name = 2 [(validate.rules).string.min_len = 1];
   string Description = 3 [(validate.rules).string.min_len = 1];
   google.protobuf.Duration Duration = 4 [(validate.rules).message.required = true];
@@ -58,7 +58,7 @@ message SongAll {
 }
 
 message    GetByIdSongRequest{
-  int64 ID = 1 [(validate.rules).int64.gt =0];
+  uint64 ID = 1 [(validate.rules).uint64.gt =0];
 }
 
 message CreateSongRequest{
@@ -68,14 +68,14 @@ message CreateSongRequest{
 }
 
 message UpdateSongRequest{
-  int64 ID = 1 [(validate.rules).int64.gt =0];
+  uint64 ID = 1 [(validate.rules).uint64.gt =0];
   string    Name = 2 [(validate.rules).string.min_len = 1];
   int64    CreatedAt = 3 [(validate.rules).message.required = true];
   int64 UpdatedAt =  4 [(validate.rules).message.required = true];
 }
 
 message  DeleteSongRequest{
-  int64 ID = 1 [(validate.rules).int64.gt =0];
+  uint64 ID = 1 [(validate.rules).uint64.gt =0];
 }
 
 service MusicService {

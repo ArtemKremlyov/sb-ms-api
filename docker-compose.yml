@@ -20,6 +20,7 @@ services:
         POSTGRES_USER: ${POSTGRES_USER}
         POSTGRES_PORT: ${POSTGRES_PORT}
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        GRPC_PORT: ${GRPC_PORT}
     networks:
       - api
     depends_on:

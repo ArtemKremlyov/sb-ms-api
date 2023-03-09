@@ -4,7 +4,8 @@ import (
 	"context"
 	"errors"
 	"github.com/gin-gonic/gin"
-	"gitlab.com/sb-cloud/player-ms-api/api/rest"
+	"gitlab.com/sb-cloud/player-ms-api/internal/api/grpc"
+	"gitlab.com/sb-cloud/player-ms-api/internal/api/rest"
 	"gitlab.com/sb-cloud/player-ms-api/internal/music"
 	"gitlab.com/sb-cloud/player-ms-api/internal/pg"
 	"log"
@@ -17,7 +18,6 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	"gitlab.com/sb-cloud/player-ms-api/api/grpc"
 	"gitlab.com/sb-cloud/player-ms-api/internal/config"
 	"gitlab.com/sb-cloud/player-ms-api/internal/models"
 )
@@ -46,7 +46,7 @@ func run() error {
 
 	p := pg.NewPostgres(db)
 	mus := music.NewMusicService(p)
-	restApi := rest.NewREST(*mus)
+	restApi := rest.NewREST(mus)
 
 	routes := restApi.Register(gin.New())
 	srv := &http.Server{

@@ -21,6 +21,6 @@ ENV SERVER_HTTP_PORT=${SERVER_HTTP_PORT}
 ENV GRPC_PORT=${GRPC_PORT}
 ENV POSTGRES_DSN="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@pg:${POSTGRES_PORT}/${POSTGRES_DB}"
 
-COPY --from=builder /api/api /
+COPY --from=builder /internal/api/api /
 
 CMD ["/api"]

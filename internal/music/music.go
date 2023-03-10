@@ -1,6 +1,7 @@
 package music
 
 import (
+	"fmt"
 	"gitlab.com/sb-cloud/player-ms-api/internal/models"
 )
 
@@ -31,46 +32,101 @@ func NewMusicService(pg PostgresImpl) *Service {
 
 // Playlists
 func (s *Service) GetAllPlaylists() ([]models.Playlist, error) {
-	return s.p.PlaylistGetAll()
+	playlists, err := s.p.PlaylistGetAll()
+	if err != nil {
+		return nil, fmt.Errorf("playlistGetAll error: %v", err)
+	}
+
+	return playlists, nil
 }
 
 func (s *Service) GetPlaylistByID(id uint) (*models.Playlist, error) {
-	return s.p.PlaylistGetByID(id)
+	playlist, err := s.p.PlaylistGetByID(id)
+	if err != nil {
+		return nil, fmt.Errorf("getPlaylistById error: %v", err)
+	}
+
+	return playlist, nil
 }
 
 func (s *Service) AddSong(playlist *models.Playlist, song *models.Song) error {
-	return s.p.PlaylistAddSong(playlist, song)
+	err := s.p.PlaylistAddSong(playlist, song)
+	if err != nil {
+		return fmt.Errorf("addSong error: %v", err)
+	}
+
+	return nil
 }
 
 func (s *Service) CreatePlaylist(playlist *models.Playlist) error {
-	return s.p.PlaylistCreate(playlist)
+	err := s.p.PlaylistCreate(playlist)
+	if err != nil {
+		return fmt.Errorf("createPlaylist error: %v", err)
+	}
+
+	return nil
 }
 
 func (s *Service) UpdatePlaylist(playlist *models.Playlist) error {
-	return s.p.PlaylistUpdate(playlist)
+	err := s.p.PlaylistUpdate(playlist)
+	if err != nil {
+		return fmt.Errorf("updatePlaylist error: %v", err)
+	}
+
+	return nil
 }
 
 func (s *Service) DeletePlaylist(id uint) error {
-	return s.p.PlaylistDelete(id)
+	err := s.p.PlaylistDelete(id)
+	if err != nil {
+		return fmt.Errorf("playlistGetAll error: %v", err)
+	}
+
+	return nil
 }
 
 // Songs
 func (s *Service) GetAllSongs() ([]models.Song, error) {
-	return s.p.SongGetAll()
+	songs, err := s.p.SongGetAll()
+	if err != nil {
+		return nil, fmt.Errorf("getAllSongs error: %v", err)
+	}
+
+	return songs, nil
 }
 
 func (s *Service) GetSongByID(id uint) (*models.Song, error) {
-	return s.p.SongGetByID(id)
+	song, err := s.p.SongGetByID(id)
+	if err != nil {
+		return nil, fmt.Errorf("getSongById error: %v", err)
+	}
+
+	return song, err
 }
 
 func (s *Service) CreateSong(song *models.Song) error {
-	return s.p.SongCreate(song)
+	err := s.p.SongCreate(song)
+	if err != nil {
+		return fmt.Errorf("createSong error: %v", err)
+	}
+
+	return nil
 }
 
 func (s *Service) UpdateSong(song *models.Song) error {
-	return s.p.SongUpdate(song)
+	err := s.p.SongUpdate(song)
+	if err != nil {
+		return fmt.Errorf("updateSong error: %v", err)
+	}
+
+	return nil
 }
 
 func (s *Service) DeleteSong(id uint) error {
-	return s.p.SongDelete(id)
+	err := s.p.SongDelete(id)
+	if err != nil {
+		return fmt.Errorf("deleteSong: %v", err)
+	}
+
+	return nil
 }

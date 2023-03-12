@@ -4,6 +4,7 @@ import (
 	"errors"
 	"gitlab.com/sb-cloud/player-ms-api/internal/models"
 	"gorm.io/gorm"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -73,6 +74,7 @@ func (r REST) PlaylistGetAll(ctx *gin.Context) {
 	playlists, err := r.music.GetAllPlaylists()
 
 	if err != nil {
+		log.Printf("failed to get all playlist: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error": "failed to get all playlist: server error",
 		})
@@ -87,7 +89,7 @@ func (r REST) PlaylistGetById(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("playlistId"))
 
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
+		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "invalid playlist id",
 		})
 		return
@@ -96,14 +98,15 @@ func (r REST) PlaylistGetById(ctx *gin.Context) {
 	playlistByID, err := r.music.GetPlaylistByID(uint(id))
 
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": "failed to get playlistByID: server error",
-		})
-		return
-	}
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, gin.H{})
+		} else {
+			log.Printf("failed to get playlistByID: %v", err)
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"error": "failed to get playlistByID: server error",
+			})
+		}
 
-	if playlistByID == nil {
-		ctx.JSON(http.StatusNotFound, gin.H{})
 		return
 	}
 
@@ -128,27 +131,28 @@ func (r REST) PlaylistAddSong(ctx *gin.Context) {
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "playlist not found"})
-			return
 		} else {
+			log.Printf("failed to find playlist: %v", err)
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to find playlist"})
-			return
 		}
+		return
 	}
 
 	songById, err := r.music.GetSongByID(uint(songID))
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "song not found"})
-			return
 		} else {
+			log.Printf("failed to find song: %v", err)
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to find song"})
-			return
 		}
+		return
 	}
 
 	err = r.music.AddSong(playlistById, songById)
 
 	if err != nil {
+		log.Printf("failed to append song to playlist: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to append song to playlist"})
 		return
 	}
@@ -166,6 +170,7 @@ func (r REST) PlaylistCreate(ctx *gin.Context) {
 		return
 	}
 	if err := r.music.CreatePlaylist(&cPlaylist); err != nil {
+		log.Printf("failed to create playlist: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error": "failed to create playlist",
 		})
@@ -179,7 +184,7 @@ func (r REST) PlaylistUpdate(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("playlistId"))
 
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
+		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "invalid playlist id",
 		})
 		return
@@ -198,6 +203,7 @@ func (r REST) PlaylistUpdate(ctx *gin.Context) {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "playlist not found"})
 		} else {
+			log.Printf("failed to update playlist: %v", err)
 			ctx.JSON(http.StatusInternalServerError, gin.H{
 				"error": "failed to update playlist",
 			})
@@ -212,7 +218,7 @@ func (r REST) PlaylistUpdate(ctx *gin.Context) {
 func (r REST) PlaylistDelete(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("playlistId"))
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
+		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "invalid playlist id",
 		})
 		return
@@ -222,11 +228,11 @@ func (r REST) PlaylistDelete(ctx *gin.Context) {
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "playlist not found"})
-			return
 		} else {
+			log.Printf("failed to delete playlist: %v", err)
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to delete playlist"})
-			return
 		}
+		return
 	}
 
 	ctx.JSON(http.StatusAccepted, gin.H{})
@@ -237,6 +243,7 @@ func (r REST) SongGetAll(ctx *gin.Context) {
 	songs, err := r.music.GetAllSongs()
 
 	if err != nil {
+		log.Printf("failed to get all songs: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error": "failed to get all songs: server error",
 		})
@@ -251,8 +258,8 @@ func (r REST) SongGetById(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("songId"))
 
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": "invalid playlist id",
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": "invalid song id",
 		})
 		return
 	}
@@ -260,15 +267,16 @@ func (r REST) SongGetById(ctx *gin.Context) {
 	songById, err := r.music.GetSongByID(uint(id))
 
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": "failed to get songById: server error",
-		})
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, gin.H{})
+		} else {
+			log.Printf("failed to get songById: %v", err)
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"error": "failed to get songById: server error",
+			})
+		}
 		return
-	}
 
-	if songById == nil {
-		ctx.JSON(http.StatusNotFound, gin.H{})
-		return
 	}
 
 	ctx.JSON(http.StatusOK, songById)
@@ -284,8 +292,9 @@ func (r REST) SongCreate(ctx *gin.Context) {
 		return
 	}
 	if err := r.music.CreateSong(&cSong); err != nil {
+		log.Printf("failed to create song: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": "failed to create playlist",
+			"error": "failed to create song",
 		})
 		return
 	}
@@ -297,7 +306,7 @@ func (r REST) SongUpdate(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("songId"))
 
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
+		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "invalid playlist id",
 		})
 		return
@@ -314,10 +323,11 @@ func (r REST) SongUpdate(ctx *gin.Context) {
 	err = r.music.UpdateSong(&cSong)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			ctx.JSON(http.StatusNotFound, gin.H{"error": "playlist not found"})
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "song not found"})
 		} else {
+			log.Printf("failed to update song: %v", err)
 			ctx.JSON(http.StatusInternalServerError, gin.H{
-				"error": "failed to update playlist",
+				"error": "failed to update song",
 			})
 		}
 
@@ -331,7 +341,7 @@ func (r REST) SongDelete(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("songId"))
 
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
+		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "invalid song id",
 		})
 		return
@@ -341,11 +351,11 @@ func (r REST) SongDelete(ctx *gin.Context) {
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "song not found"})
-			return
 		} else {
+			log.Printf("failed to delete song: %v", err)
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to delete song"})
-			return
 		}
+		return
 	}
 
 	ctx.JSON(http.StatusAccepted, gin.H{})

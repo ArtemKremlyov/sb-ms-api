@@ -384,6 +384,25 @@ func (r REST) SongDelete(ctx *gin.Context) {
 		return
 	}
 
+	song, err := r.music.GetSongByID(uint(id))
+
+	if err != nil {
+		if errors.As(err, &gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, gin.H{})
+		} else {
+			log.Printf("failed to get song: %v", err)
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"error": "failed to get song: server error",
+			})
+		}
+		return
+	}
+
+	if song.Playing {
+		ctx.JSON(http.StatusForbidden, gin.H{"error": "can't delete a song that's already playing"})
+		return
+	}
+
 	err = r.music.DeleteSong(uint(id))
 	if err != nil {
 		if errors.As(err, &gorm.ErrRecordNotFound) {

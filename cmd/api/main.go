@@ -65,7 +65,7 @@ func run() error {
 	})
 
 	go start(ctx, errc, 30, func() error {
-		return grpc.Start(cfg.GRPCPort)
+		return grpc.Start(":" + cfg.GRPCPort)
 	}, func() error {
 		grpc.Shutdown()
 		return nil

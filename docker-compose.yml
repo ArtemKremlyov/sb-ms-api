@@ -27,6 +27,7 @@ services:
       - pg
     ports:
       - "${SERVER_HTTP_PORT}:${SERVER_HTTP_PORT}"
+      - "${GRPC_PORT}:${GRPC_PORT}"
     tty: true
 networks:
   api:

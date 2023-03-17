@@ -50,7 +50,7 @@ func (r REST) Register(router *gin.Engine) *gin.Engine {
 			{
 				playlists.GET("/", r.PlaylistGetAll)
 				playlists.POST("/", r.PlaylistCreate)
-				playlists.POST("/:playlistID/songs/:songId", r.PlaylistAddSong)
+				playlists.POST("/:playlistId/songs/:songId", r.PlaylistAddSong)
 				playlists.GET("/:playlistId", r.PlaylistGetById)
 				playlists.PUT("/:playlistId", r.PlaylistUpdate)
 				playlists.DELETE("/:playlistId", r.PlaylistDelete)

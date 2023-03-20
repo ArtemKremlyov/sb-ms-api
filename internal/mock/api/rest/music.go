@@ -337,6 +337,61 @@ func (_c *Music_GetAllSongs_Call) RunAndReturn(run func() ([]models.Song, error)
 	return _c
 }
 
+// GetNextSong provides a mock function with given fields: playlist, songId
+func (_m *Music) GetNextSong(playlist *models.Playlist, songId uint) (*models.Song, error) {
+	ret := _m.Called(playlist, songId)
+
+	var r0 *models.Song
+	var r1 error
+	if rf, ok := ret.Get(0).(func(*models.Playlist, uint) (*models.Song, error)); ok {
+		return rf(playlist, songId)
+	}
+	if rf, ok := ret.Get(0).(func(*models.Playlist, uint) *models.Song); ok {
+		r0 = rf(playlist, songId)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.Song)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(*models.Playlist, uint) error); ok {
+		r1 = rf(playlist, songId)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Music_GetNextSong_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetNextSong'
+type Music_GetNextSong_Call struct {
+	*mock.Call
+}
+
+// GetNextSong is a helper method to define mock.On call
+//   - playlist *models.Playlist
+//   - songId uint
+func (_e *Music_Expecter) GetNextSong(playlist interface{}, songId interface{}) *Music_GetNextSong_Call {
+	return &Music_GetNextSong_Call{Call: _e.mock.On("GetNextSong", playlist, songId)}
+}
+
+func (_c *Music_GetNextSong_Call) Run(run func(playlist *models.Playlist, songId uint)) *Music_GetNextSong_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*models.Playlist), args[1].(uint))
+	})
+	return _c
+}
+
+func (_c *Music_GetNextSong_Call) Return(_a0 *models.Song, _a1 error) *Music_GetNextSong_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Music_GetNextSong_Call) RunAndReturn(run func(*models.Playlist, uint) (*models.Song, error)) *Music_GetNextSong_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // GetPlaylistByID provides a mock function with given fields: id
 func (_m *Music) GetPlaylistByID(id uint) (*models.Playlist, error) {
 	ret := _m.Called(id)
@@ -387,6 +442,115 @@ func (_c *Music_GetPlaylistByID_Call) Return(_a0 *models.Playlist, _a1 error) *M
 }
 
 func (_c *Music_GetPlaylistByID_Call) RunAndReturn(run func(uint) (*models.Playlist, error)) *Music_GetPlaylistByID_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetPlaylistSongs provides a mock function with given fields: playlist
+func (_m *Music) GetPlaylistSongs(playlist *models.Playlist) ([]models.Song, error) {
+	ret := _m.Called(playlist)
+
+	var r0 []models.Song
+	var r1 error
+	if rf, ok := ret.Get(0).(func(*models.Playlist) ([]models.Song, error)); ok {
+		return rf(playlist)
+	}
+	if rf, ok := ret.Get(0).(func(*models.Playlist) []models.Song); ok {
+		r0 = rf(playlist)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]models.Song)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(*models.Playlist) error); ok {
+		r1 = rf(playlist)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Music_GetPlaylistSongs_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetPlaylistSongs'
+type Music_GetPlaylistSongs_Call struct {
+	*mock.Call
+}
+
+// GetPlaylistSongs is a helper method to define mock.On call
+//   - playlist *models.Playlist
+func (_e *Music_Expecter) GetPlaylistSongs(playlist interface{}) *Music_GetPlaylistSongs_Call {
+	return &Music_GetPlaylistSongs_Call{Call: _e.mock.On("GetPlaylistSongs", playlist)}
+}
+
+func (_c *Music_GetPlaylistSongs_Call) Run(run func(playlist *models.Playlist)) *Music_GetPlaylistSongs_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*models.Playlist))
+	})
+	return _c
+}
+
+func (_c *Music_GetPlaylistSongs_Call) Return(_a0 []models.Song, _a1 error) *Music_GetPlaylistSongs_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Music_GetPlaylistSongs_Call) RunAndReturn(run func(*models.Playlist) ([]models.Song, error)) *Music_GetPlaylistSongs_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetPrevSong provides a mock function with given fields: playlist, songId
+func (_m *Music) GetPrevSong(playlist *models.Playlist, songId uint) (*models.Song, error) {
+	ret := _m.Called(playlist, songId)
+
+	var r0 *models.Song
+	var r1 error
+	if rf, ok := ret.Get(0).(func(*models.Playlist, uint) (*models.Song, error)); ok {
+		return rf(playlist, songId)
+	}
+	if rf, ok := ret.Get(0).(func(*models.Playlist, uint) *models.Song); ok {
+		r0 = rf(playlist, songId)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.Song)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(*models.Playlist, uint) error); ok {
+		r1 = rf(playlist, songId)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Music_GetPrevSong_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetPrevSong'
+type Music_GetPrevSong_Call struct {
+	*mock.Call
+}
+
+// GetPrevSong is a helper method to define mock.On call
+//   - playlist *models.Playlist
+//   - songId uint
+func (_e *Music_Expecter) GetPrevSong(playlist interface{}, songId interface{}) *Music_GetPrevSong_Call {
+	return &Music_GetPrevSong_Call{Call: _e.mock.On("GetPrevSong", playlist, songId)}
+}
+
+func (_c *Music_GetPrevSong_Call) Run(run func(playlist *models.Playlist, songId uint)) *Music_GetPrevSong_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*models.Playlist), args[1].(uint))
+	})
+	return _c
+}
+
+func (_c *Music_GetPrevSong_Call) Return(_a0 *models.Song, _a1 error) *Music_GetPrevSong_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Music_GetPrevSong_Call) RunAndReturn(run func(*models.Playlist, uint) (*models.Song, error)) *Music_GetPrevSong_Call {
 	_c.Call.Return(run)
 	return _c
 }

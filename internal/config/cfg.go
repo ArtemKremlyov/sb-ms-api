@@ -4,7 +4,7 @@ import "github.com/caarlos0/env/v6"
 
 type Config struct {
 	PostgresDSN    string `env:"POSTGRES_DSN,notEmpty"`
-	GRPCPort       string `env:"GRPCPort envDefault"9090"`
+	GRPCPort       string `env:"GRPCPort" envDefault:"9090"`
 	ServerHTTPPort string `env:"SERVER_HTTP_PORT" envDefault:"8080"`
 }
 

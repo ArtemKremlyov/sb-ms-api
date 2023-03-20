@@ -147,6 +147,49 @@ func (_c *PostgresImpl_PlaylistDelete_Call) RunAndReturn(run func(uint) error) *
 	return _c
 }
 
+// PlaylistDeleteSong provides a mock function with given fields: playlist, song
+func (_m *PostgresImpl) PlaylistDeleteSong(playlist *models.Playlist, song *models.Song) error {
+	ret := _m.Called(playlist, song)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*models.Playlist, *models.Song) error); ok {
+		r0 = rf(playlist, song)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// PostgresImpl_PlaylistDeleteSong_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'PlaylistDeleteSong'
+type PostgresImpl_PlaylistDeleteSong_Call struct {
+	*mock.Call
+}
+
+// PlaylistDeleteSong is a helper method to define mock.On call
+//   - playlist *models.Playlist
+//   - song *models.Song
+func (_e *PostgresImpl_Expecter) PlaylistDeleteSong(playlist interface{}, song interface{}) *PostgresImpl_PlaylistDeleteSong_Call {
+	return &PostgresImpl_PlaylistDeleteSong_Call{Call: _e.mock.On("PlaylistDeleteSong", playlist, song)}
+}
+
+func (_c *PostgresImpl_PlaylistDeleteSong_Call) Run(run func(playlist *models.Playlist, song *models.Song)) *PostgresImpl_PlaylistDeleteSong_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*models.Playlist), args[1].(*models.Song))
+	})
+	return _c
+}
+
+func (_c *PostgresImpl_PlaylistDeleteSong_Call) Return(_a0 error) *PostgresImpl_PlaylistDeleteSong_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *PostgresImpl_PlaylistDeleteSong_Call) RunAndReturn(run func(*models.Playlist, *models.Song) error) *PostgresImpl_PlaylistDeleteSong_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // PlaylistGetAll provides a mock function with given fields:
 func (_m *PostgresImpl) PlaylistGetAll() ([]models.Playlist, error) {
 	ret := _m.Called()
@@ -250,6 +293,60 @@ func (_c *PostgresImpl_PlaylistGetByID_Call) Return(_a0 *models.Playlist, _a1 er
 }
 
 func (_c *PostgresImpl_PlaylistGetByID_Call) RunAndReturn(run func(uint) (*models.Playlist, error)) *PostgresImpl_PlaylistGetByID_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// PlaylistGetSongs provides a mock function with given fields: playlist
+func (_m *PostgresImpl) PlaylistGetSongs(playlist *models.Playlist) ([]models.Song, error) {
+	ret := _m.Called(playlist)
+
+	var r0 []models.Song
+	var r1 error
+	if rf, ok := ret.Get(0).(func(*models.Playlist) ([]models.Song, error)); ok {
+		return rf(playlist)
+	}
+	if rf, ok := ret.Get(0).(func(*models.Playlist) []models.Song); ok {
+		r0 = rf(playlist)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]models.Song)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(*models.Playlist) error); ok {
+		r1 = rf(playlist)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// PostgresImpl_PlaylistGetSongs_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'PlaylistGetSongs'
+type PostgresImpl_PlaylistGetSongs_Call struct {
+	*mock.Call
+}
+
+// PlaylistGetSongs is a helper method to define mock.On call
+//   - playlist *models.Playlist
+func (_e *PostgresImpl_Expecter) PlaylistGetSongs(playlist interface{}) *PostgresImpl_PlaylistGetSongs_Call {
+	return &PostgresImpl_PlaylistGetSongs_Call{Call: _e.mock.On("PlaylistGetSongs", playlist)}
+}
+
+func (_c *PostgresImpl_PlaylistGetSongs_Call) Run(run func(playlist *models.Playlist)) *PostgresImpl_PlaylistGetSongs_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*models.Playlist))
+	})
+	return _c
+}
+
+func (_c *PostgresImpl_PlaylistGetSongs_Call) Return(_a0 []models.Song, _a1 error) *PostgresImpl_PlaylistGetSongs_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *PostgresImpl_PlaylistGetSongs_Call) RunAndReturn(run func(*models.Playlist) ([]models.Song, error)) *PostgresImpl_PlaylistGetSongs_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -525,6 +622,60 @@ func (_c *PostgresImpl_SongUpdate_Call) Return(_a0 error) *PostgresImpl_SongUpda
 }
 
 func (_c *PostgresImpl_SongUpdate_Call) RunAndReturn(run func(*models.Song) error) *PostgresImpl_SongUpdate_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// SongsGetByPlaylistId provides a mock function with given fields: playlist
+func (_m *PostgresImpl) SongsGetByPlaylistId(playlist *models.Playlist) ([]models.Song, error) {
+	ret := _m.Called(playlist)
+
+	var r0 []models.Song
+	var r1 error
+	if rf, ok := ret.Get(0).(func(*models.Playlist) ([]models.Song, error)); ok {
+		return rf(playlist)
+	}
+	if rf, ok := ret.Get(0).(func(*models.Playlist) []models.Song); ok {
+		r0 = rf(playlist)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]models.Song)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(*models.Playlist) error); ok {
+		r1 = rf(playlist)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// PostgresImpl_SongsGetByPlaylistId_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SongsGetByPlaylistId'
+type PostgresImpl_SongsGetByPlaylistId_Call struct {
+	*mock.Call
+}
+
+// SongsGetByPlaylistId is a helper method to define mock.On call
+//   - playlist *models.Playlist
+func (_e *PostgresImpl_Expecter) SongsGetByPlaylistId(playlist interface{}) *PostgresImpl_SongsGetByPlaylistId_Call {
+	return &PostgresImpl_SongsGetByPlaylistId_Call{Call: _e.mock.On("SongsGetByPlaylistId", playlist)}
+}
+
+func (_c *PostgresImpl_SongsGetByPlaylistId_Call) Run(run func(playlist *models.Playlist)) *PostgresImpl_SongsGetByPlaylistId_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*models.Playlist))
+	})
+	return _c
+}
+
+func (_c *PostgresImpl_SongsGetByPlaylistId_Call) Return(_a0 []models.Song, _a1 error) *PostgresImpl_SongsGetByPlaylistId_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *PostgresImpl_SongsGetByPlaylistId_Call) RunAndReturn(run func(*models.Playlist) ([]models.Song, error)) *PostgresImpl_SongsGetByPlaylistId_Call {
 	_c.Call.Return(run)
 	return _c
 }

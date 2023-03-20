@@ -37,6 +37,10 @@ func (p *Postgres) PlaylistAddSong(playlist *models.Playlist, song *models.Song)
 	return p.db.Model(playlist).Association("Songs").Append(song)
 }
 
+func (p *Postgres) PlaylistDeleteSong(playlist *models.Playlist, song *models.Song) error {
+	return p.db.Model(playlist).Association("Songs").Delete(song)
+}
+
 func (p *Postgres) PlaylistCreate(playlist *models.Playlist) error {
 	return p.db.Create(playlist).Error
 }
@@ -65,6 +69,12 @@ func (r *Postgres) SongGetByID(id uint) (*models.Song, error) {
 		return nil, err
 	}
 	return &song, nil
+}
+
+func (r *Postgres) SongsGetByPlaylistId(playlist *models.Playlist) ([]models.Song, error) {
+	var songs []models.Song
+	err := r.db.Model(&playlist).Order("id").Association("Songs").Find(&songs)
+	return songs, err
 }
 
 func (r *Postgres) SongCreate(song *models.Song) error {

@@ -3,16 +3,20 @@ package music
 import (
 	"fmt"
 	"gitlab.com/sb-cloud/player-ms-api/internal/models"
+	"gorm.io/gorm"
 )
 
 type PostgresImpl interface {
 	PlaylistGetAll() ([]models.Playlist, error)
 	PlaylistGetByID(id uint) (*models.Playlist, error)
+	PlaylistGetSongs(playlist *models.Playlist) ([]models.Song, error)
 	PlaylistAddSong(playlist *models.Playlist, song *models.Song) error
+	PlaylistDeleteSong(playlist *models.Playlist, song *models.Song) error
 	PlaylistCreate(playlist *models.Playlist) error
 	PlaylistUpdate(playlist *models.Playlist) error
 	PlaylistDelete(id uint) error
 
+	SongsGetByPlaylistId(playlist *models.Playlist) ([]models.Song, error)
 	SongGetAll() ([]models.Song, error)
 	SongGetByID(id uint) (*models.Song, error)
 	SongCreate(song *models.Song) error
@@ -49,10 +53,28 @@ func (s *Service) GetPlaylistByID(id uint) (*models.Playlist, error) {
 	return playlist, nil
 }
 
+func (s *Service) GetPlaylistSongs(playlist *models.Playlist) ([]models.Song, error) {
+	songs, err := s.p.SongsGetByPlaylistId(playlist)
+	if err != nil {
+		return nil, fmt.Errorf("getPlaylistSongs error: %v", err)
+	}
+
+	return songs, nil
+}
+
 func (s *Service) AddSong(playlist *models.Playlist, song *models.Song) error {
 	err := s.p.PlaylistAddSong(playlist, song)
 	if err != nil {
 		return fmt.Errorf("addSong error: %v", err)
+	}
+
+	return nil
+}
+
+func (s *Service) PlaylistDeleteSong(playlist *models.Playlist, song *models.Song) error {
+	err := s.p.PlaylistDeleteSong(playlist, song)
+	if err != nil {
+		return fmt.Errorf("deleteSong error: %v", err)
 	}
 
 	return nil
@@ -102,6 +124,62 @@ func (s *Service) GetSongByID(id uint) (*models.Song, error) {
 	}
 
 	return song, err
+}
+
+func (s *Service) GetNextSong(playlist *models.Playlist, songId uint) (*models.Song, error) {
+	songs, err := s.p.SongsGetByPlaylistId(playlist)
+	if err != nil {
+		return nil, fmt.Errorf("songsGetByPlaylistId error: %v", err)
+	}
+
+	var currentIndex int
+	for i, song := range songs {
+		if song.ID == songId {
+			currentIndex = i
+			break
+		}
+	}
+
+	if len(songs) == 0 {
+		return nil, gorm.ErrRecordNotFound
+	}
+
+	var nextSong models.Song
+	if currentIndex+1 < len(songs) {
+		nextSong = songs[currentIndex+1]
+	} else {
+		nextSong = songs[0]
+	}
+
+	return &nextSong, err
+}
+
+func (s *Service) GetPrevSong(playlist *models.Playlist, songId uint) (*models.Song, error) {
+	songs, err := s.p.SongsGetByPlaylistId(playlist)
+	if err != nil {
+		return nil, fmt.Errorf("songsGetByPlaylistId error: %v", err)
+	}
+
+	var currentIndex int
+	for i, song := range songs {
+		if song.ID == songId {
+			currentIndex = i
+			break
+		}
+	}
+
+	if len(songs) == 0 {
+		return nil, gorm.ErrRecordNotFound
+	}
+
+	var prevSong models.Song
+	if currentIndex-1 >= 0 {
+		prevSong = songs[currentIndex-1]
+	} else {
+		prevSong = songs[len(songs)-1]
+	}
+
+	return &prevSong, err
 }
 
 func (s *Service) CreateSong(song *models.Song) error {

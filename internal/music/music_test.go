@@ -108,6 +108,32 @@ func (m *MusicSuite) TestMusic_ErrorUpdatePlaylist() {
 	assert.Error(m.T(), err)
 }
 
+func (m *MusicSuite) TestMusic_GetPlaylistSongs() {
+	playlist := &models.Playlist{ID: 1, Name: "Playlist"}
+	expectedSongs := []models.Song{
+		{ID: 1, Name: "Track 1", Duration: 30},
+		{ID: 2, Name: "Track 2", Duration: 20},
+		{ID: 3, Name: "Track 3", Duration: 10},
+	}
+
+	m.mockPG.EXPECT().SongsGetByPlaylistId(playlist).Return(expectedSongs, nil).Times(1)
+
+	songs, err := m.service.GetPlaylistSongs(playlist)
+	assert.NoError(m.T(), err)
+	assert.Equal(m.T(), expectedSongs, songs)
+}
+
+func (m *MusicSuite) TestMusic_ErrorGetPlaylistSongs() {
+	playlist := &models.Playlist{ID: 1, Name: "Playlist"}
+	expectedErrorPostgres := errors.New("something with postgres")
+
+	m.mockPG.EXPECT().SongsGetByPlaylistId(playlist).Return(nil, expectedErrorPostgres).Times(1)
+
+	songs, err := m.service.GetPlaylistSongs(playlist)
+	assert.Error(m.T(), err)
+	assert.Nil(m.T(), songs)
+}
+
 func (m *MusicSuite) TestMusic_DeletePlaylist() {
 	id := uint(1)
 
@@ -209,6 +235,80 @@ func (m *MusicSuite) TestMusic_ErrorGetSongById() {
 
 	playlist, err := m.service.GetSongByID(id)
 	assert.Nil(m.T(), playlist)
+	assert.Error(m.T(), err)
+}
+
+func (m *MusicSuite) TestMusic_GetNextSong() {
+	playlist := &models.Playlist{
+		ID:   1,
+		Name: "Playlist",
+	}
+	songId := uint(1)
+	songs := []models.Song{
+		{ID: 1, Name: "Track 1", Duration: 30},
+		{ID: 2, Name: "Track 2", Duration: 20},
+		{ID: 3, Name: "Track 3", Duration: 10},
+	}
+
+	expectedSong := &models.Song{
+		ID: 2, Name: "Track 2", Duration: 20,
+	}
+
+	m.mockPG.EXPECT().SongsGetByPlaylistId(playlist).Return(songs, nil).Times(1)
+
+	song, err := m.service.GetNextSong(playlist, songId)
+	assert.NoError(m.T(), err)
+	assert.Equal(m.T(), expectedSong, song)
+}
+
+func (m *MusicSuite) TestMusic_GetNextSongError() {
+	expectedErrorPostgres := errors.New("something with postgres")
+	playlist := &models.Playlist{
+		ID:   1,
+		Name: "Playlist",
+	}
+	songId := uint(2)
+
+	m.mockPG.EXPECT().SongsGetByPlaylistId(playlist).Return(nil, expectedErrorPostgres).Times(1)
+
+	_, err := m.service.GetNextSong(playlist, songId)
+	assert.Error(m.T(), err)
+}
+
+func (m *MusicSuite) TestMusic_GetPrevSong() {
+	playlist := &models.Playlist{
+		ID:   1,
+		Name: "Playlist",
+	}
+	songId := uint(2)
+	songs := []models.Song{
+		{ID: 1, Name: "Track 1", Duration: 30},
+		{ID: 2, Name: "Track 2", Duration: 20},
+		{ID: 3, Name: "Track 3", Duration: 10},
+	}
+
+	expectedSong := &models.Song{
+		ID: 1, Name: "Track 1", Duration: 30,
+	}
+
+	m.mockPG.EXPECT().SongsGetByPlaylistId(playlist).Return(songs, nil).Times(1)
+
+	song, err := m.service.GetPrevSong(playlist, songId)
+	assert.NoError(m.T(), err)
+	assert.Equal(m.T(), expectedSong, song)
+}
+
+func (m *MusicSuite) TestMusic_GetPrevSongError() {
+	expectedErrorPostgres := errors.New("something with postgres")
+	playlist := &models.Playlist{
+		ID:   1,
+		Name: "Playlist",
+	}
+	songId := uint(2)
+
+	m.mockPG.EXPECT().SongsGetByPlaylistId(playlist).Return(nil, expectedErrorPostgres).Times(1)
+
+	_, err := m.service.GetPrevSong(playlist, songId)
 	assert.Error(m.T(), err)
 }
 

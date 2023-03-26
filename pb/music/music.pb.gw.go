@@ -66,6 +66,40 @@ func local_request_MusicService_GetAllPlaylist_0(ctx context.Context, marshaler 
 
 }
 
+func request_MusicService_PlaylistAddSong_0(ctx context.Context, marshaler runtime.Marshaler, client MusicServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq PlaylistAddSongRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.PlaylistAddSong(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_MusicService_PlaylistAddSong_0(ctx context.Context, marshaler runtime.Marshaler, server MusicServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq PlaylistAddSongRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.PlaylistAddSong(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_MusicService_GetByIdPlaylist_0(ctx context.Context, marshaler runtime.Marshaler, client MusicServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetByIdPlaylistRequest
 	var metadata runtime.ServerMetadata
@@ -202,6 +236,40 @@ func local_request_MusicService_DeletePlaylist_0(ctx context.Context, marshaler 
 
 }
 
+func request_MusicService_GetPlaylistSongs_0(ctx context.Context, marshaler runtime.Marshaler, client MusicServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetPlaylistSongsRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.GetPlaylistSongs(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_MusicService_GetPlaylistSongs_0(ctx context.Context, marshaler runtime.Marshaler, server MusicServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetPlaylistSongsRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.GetPlaylistSongs(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_MusicService_GetAllSong_0(ctx context.Context, marshaler runtime.Marshaler, client MusicServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq emptypb.Empty
 	var metadata runtime.ServerMetadata
@@ -304,6 +372,74 @@ func local_request_MusicService_CreateSong_0(ctx context.Context, marshaler runt
 
 }
 
+func request_MusicService_SongGetNext_0(ctx context.Context, marshaler runtime.Marshaler, client MusicServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SongGetNextRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.SongGetNext(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_MusicService_SongGetNext_0(ctx context.Context, marshaler runtime.Marshaler, server MusicServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SongGetNextRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.SongGetNext(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_MusicService_SongGetPrev_0(ctx context.Context, marshaler runtime.Marshaler, client MusicServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SongGetPrevRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.SongGetPrev(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_MusicService_SongGetPrev_0(ctx context.Context, marshaler runtime.Marshaler, server MusicServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SongGetPrevRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.SongGetPrev(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_MusicService_UpdateSong_0(ctx context.Context, marshaler runtime.Marshaler, client MusicServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateSongRequest
 	var metadata runtime.ServerMetadata
@@ -386,7 +522,7 @@ func RegisterMusicServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/articles.MusicService/GetAllPlaylist", runtime.WithHTTPPathPattern("/articles.MusicService/GetAllPlaylist"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/music.MusicService/GetAllPlaylist", runtime.WithHTTPPathPattern("/music.MusicService/GetAllPlaylist"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -403,6 +539,31 @@ func RegisterMusicServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 
 	})
 
+	mux.Handle("POST", pattern_MusicService_PlaylistAddSong_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/music.MusicService/PlaylistAddSong", runtime.WithHTTPPathPattern("/music.MusicService/PlaylistAddSong"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MusicService_PlaylistAddSong_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_MusicService_PlaylistAddSong_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("POST", pattern_MusicService_GetByIdPlaylist_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -411,7 +572,7 @@ func RegisterMusicServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/articles.MusicService/GetByIdPlaylist", runtime.WithHTTPPathPattern("/articles.MusicService/GetByIdPlaylist"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/music.MusicService/GetByIdPlaylist", runtime.WithHTTPPathPattern("/music.MusicService/GetByIdPlaylist"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -436,7 +597,7 @@ func RegisterMusicServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/articles.MusicService/CreatePlaylist", runtime.WithHTTPPathPattern("/articles.MusicService/CreatePlaylist"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/music.MusicService/CreatePlaylist", runtime.WithHTTPPathPattern("/music.MusicService/CreatePlaylist"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -461,7 +622,7 @@ func RegisterMusicServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/articles.MusicService/UpdatePlaylist", runtime.WithHTTPPathPattern("/articles.MusicService/UpdatePlaylist"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/music.MusicService/UpdatePlaylist", runtime.WithHTTPPathPattern("/music.MusicService/UpdatePlaylist"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -486,7 +647,7 @@ func RegisterMusicServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/articles.MusicService/DeletePlaylist", runtime.WithHTTPPathPattern("/articles.MusicService/DeletePlaylist"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/music.MusicService/DeletePlaylist", runtime.WithHTTPPathPattern("/music.MusicService/DeletePlaylist"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -503,6 +664,31 @@ func RegisterMusicServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 
 	})
 
+	mux.Handle("POST", pattern_MusicService_GetPlaylistSongs_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/music.MusicService/GetPlaylistSongs", runtime.WithHTTPPathPattern("/music.MusicService/GetPlaylistSongs"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MusicService_GetPlaylistSongs_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_MusicService_GetPlaylistSongs_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("POST", pattern_MusicService_GetAllSong_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -511,7 +697,7 @@ func RegisterMusicServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/articles.MusicService/GetAllSong", runtime.WithHTTPPathPattern("/articles.MusicService/GetAllSong"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/music.MusicService/GetAllSong", runtime.WithHTTPPathPattern("/music.MusicService/GetAllSong"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -536,7 +722,7 @@ func RegisterMusicServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/articles.MusicService/GetByIdSong", runtime.WithHTTPPathPattern("/articles.MusicService/GetByIdSong"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/music.MusicService/GetByIdSong", runtime.WithHTTPPathPattern("/music.MusicService/GetByIdSong"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -561,7 +747,7 @@ func RegisterMusicServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/articles.MusicService/CreateSong", runtime.WithHTTPPathPattern("/articles.MusicService/CreateSong"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/music.MusicService/CreateSong", runtime.WithHTTPPathPattern("/music.MusicService/CreateSong"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -578,6 +764,56 @@ func RegisterMusicServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 
 	})
 
+	mux.Handle("POST", pattern_MusicService_SongGetNext_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/music.MusicService/SongGetNext", runtime.WithHTTPPathPattern("/music.MusicService/SongGetNext"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MusicService_SongGetNext_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_MusicService_SongGetNext_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_MusicService_SongGetPrev_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/music.MusicService/SongGetPrev", runtime.WithHTTPPathPattern("/music.MusicService/SongGetPrev"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MusicService_SongGetPrev_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_MusicService_SongGetPrev_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("POST", pattern_MusicService_UpdateSong_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -586,7 +822,7 @@ func RegisterMusicServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/articles.MusicService/UpdateSong", runtime.WithHTTPPathPattern("/articles.MusicService/UpdateSong"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/music.MusicService/UpdateSong", runtime.WithHTTPPathPattern("/music.MusicService/UpdateSong"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -611,7 +847,7 @@ func RegisterMusicServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/articles.MusicService/DeleteSong", runtime.WithHTTPPathPattern("/articles.MusicService/DeleteSong"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/music.MusicService/DeleteSong", runtime.WithHTTPPathPattern("/music.MusicService/DeleteSong"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -675,7 +911,7 @@ func RegisterMusicServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/articles.MusicService/GetAllPlaylist", runtime.WithHTTPPathPattern("/articles.MusicService/GetAllPlaylist"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/music.MusicService/GetAllPlaylist", runtime.WithHTTPPathPattern("/music.MusicService/GetAllPlaylist"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -691,13 +927,35 @@ func RegisterMusicServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 
 	})
 
+	mux.Handle("POST", pattern_MusicService_PlaylistAddSong_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/music.MusicService/PlaylistAddSong", runtime.WithHTTPPathPattern("/music.MusicService/PlaylistAddSong"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MusicService_PlaylistAddSong_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_MusicService_PlaylistAddSong_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("POST", pattern_MusicService_GetByIdPlaylist_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/articles.MusicService/GetByIdPlaylist", runtime.WithHTTPPathPattern("/articles.MusicService/GetByIdPlaylist"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/music.MusicService/GetByIdPlaylist", runtime.WithHTTPPathPattern("/music.MusicService/GetByIdPlaylist"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -719,7 +977,7 @@ func RegisterMusicServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/articles.MusicService/CreatePlaylist", runtime.WithHTTPPathPattern("/articles.MusicService/CreatePlaylist"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/music.MusicService/CreatePlaylist", runtime.WithHTTPPathPattern("/music.MusicService/CreatePlaylist"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -741,7 +999,7 @@ func RegisterMusicServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/articles.MusicService/UpdatePlaylist", runtime.WithHTTPPathPattern("/articles.MusicService/UpdatePlaylist"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/music.MusicService/UpdatePlaylist", runtime.WithHTTPPathPattern("/music.MusicService/UpdatePlaylist"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -763,7 +1021,7 @@ func RegisterMusicServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/articles.MusicService/DeletePlaylist", runtime.WithHTTPPathPattern("/articles.MusicService/DeletePlaylist"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/music.MusicService/DeletePlaylist", runtime.WithHTTPPathPattern("/music.MusicService/DeletePlaylist"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -779,13 +1037,35 @@ func RegisterMusicServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 
 	})
 
+	mux.Handle("POST", pattern_MusicService_GetPlaylistSongs_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/music.MusicService/GetPlaylistSongs", runtime.WithHTTPPathPattern("/music.MusicService/GetPlaylistSongs"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MusicService_GetPlaylistSongs_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_MusicService_GetPlaylistSongs_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("POST", pattern_MusicService_GetAllSong_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/articles.MusicService/GetAllSong", runtime.WithHTTPPathPattern("/articles.MusicService/GetAllSong"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/music.MusicService/GetAllSong", runtime.WithHTTPPathPattern("/music.MusicService/GetAllSong"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -807,7 +1087,7 @@ func RegisterMusicServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/articles.MusicService/GetByIdSong", runtime.WithHTTPPathPattern("/articles.MusicService/GetByIdSong"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/music.MusicService/GetByIdSong", runtime.WithHTTPPathPattern("/music.MusicService/GetByIdSong"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -829,7 +1109,7 @@ func RegisterMusicServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/articles.MusicService/CreateSong", runtime.WithHTTPPathPattern("/articles.MusicService/CreateSong"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/music.MusicService/CreateSong", runtime.WithHTTPPathPattern("/music.MusicService/CreateSong"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -845,13 +1125,57 @@ func RegisterMusicServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 
 	})
 
+	mux.Handle("POST", pattern_MusicService_SongGetNext_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/music.MusicService/SongGetNext", runtime.WithHTTPPathPattern("/music.MusicService/SongGetNext"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MusicService_SongGetNext_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_MusicService_SongGetNext_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_MusicService_SongGetPrev_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/music.MusicService/SongGetPrev", runtime.WithHTTPPathPattern("/music.MusicService/SongGetPrev"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MusicService_SongGetPrev_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_MusicService_SongGetPrev_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("POST", pattern_MusicService_UpdateSong_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/articles.MusicService/UpdateSong", runtime.WithHTTPPathPattern("/articles.MusicService/UpdateSong"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/music.MusicService/UpdateSong", runtime.WithHTTPPathPattern("/music.MusicService/UpdateSong"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -873,7 +1197,7 @@ func RegisterMusicServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/articles.MusicService/DeleteSong", runtime.WithHTTPPathPattern("/articles.MusicService/DeleteSong"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/music.MusicService/DeleteSong", runtime.WithHTTPPathPattern("/music.MusicService/DeleteSong"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -893,29 +1217,39 @@ func RegisterMusicServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 }
 
 var (
-	pattern_MusicService_GetAllPlaylist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"articles.MusicService", "GetAllPlaylist"}, ""))
+	pattern_MusicService_GetAllPlaylist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"music.MusicService", "GetAllPlaylist"}, ""))
 
-	pattern_MusicService_GetByIdPlaylist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"articles.MusicService", "GetByIdPlaylist"}, ""))
+	pattern_MusicService_PlaylistAddSong_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"music.MusicService", "PlaylistAddSong"}, ""))
 
-	pattern_MusicService_CreatePlaylist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"articles.MusicService", "CreatePlaylist"}, ""))
+	pattern_MusicService_GetByIdPlaylist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"music.MusicService", "GetByIdPlaylist"}, ""))
 
-	pattern_MusicService_UpdatePlaylist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"articles.MusicService", "UpdatePlaylist"}, ""))
+	pattern_MusicService_CreatePlaylist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"music.MusicService", "CreatePlaylist"}, ""))
 
-	pattern_MusicService_DeletePlaylist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"articles.MusicService", "DeletePlaylist"}, ""))
+	pattern_MusicService_UpdatePlaylist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"music.MusicService", "UpdatePlaylist"}, ""))
 
-	pattern_MusicService_GetAllSong_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"articles.MusicService", "GetAllSong"}, ""))
+	pattern_MusicService_DeletePlaylist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"music.MusicService", "DeletePlaylist"}, ""))
 
-	pattern_MusicService_GetByIdSong_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"articles.MusicService", "GetByIdSong"}, ""))
+	pattern_MusicService_GetPlaylistSongs_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"music.MusicService", "GetPlaylistSongs"}, ""))
 
-	pattern_MusicService_CreateSong_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"articles.MusicService", "CreateSong"}, ""))
+	pattern_MusicService_GetAllSong_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"music.MusicService", "GetAllSong"}, ""))
 
-	pattern_MusicService_UpdateSong_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"articles.MusicService", "UpdateSong"}, ""))
+	pattern_MusicService_GetByIdSong_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"music.MusicService", "GetByIdSong"}, ""))
 
-	pattern_MusicService_DeleteSong_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"articles.MusicService", "DeleteSong"}, ""))
+	pattern_MusicService_CreateSong_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"music.MusicService", "CreateSong"}, ""))
+
+	pattern_MusicService_SongGetNext_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"music.MusicService", "SongGetNext"}, ""))
+
+	pattern_MusicService_SongGetPrev_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"music.MusicService", "SongGetPrev"}, ""))
+
+	pattern_MusicService_UpdateSong_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"music.MusicService", "UpdateSong"}, ""))
+
+	pattern_MusicService_DeleteSong_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"music.MusicService", "DeleteSong"}, ""))
 )
 
 var (
 	forward_MusicService_GetAllPlaylist_0 = runtime.ForwardResponseMessage
+
+	forward_MusicService_PlaylistAddSong_0 = runtime.ForwardResponseMessage
 
 	forward_MusicService_GetByIdPlaylist_0 = runtime.ForwardResponseMessage
 
@@ -925,11 +1259,17 @@ var (
 
 	forward_MusicService_DeletePlaylist_0 = runtime.ForwardResponseMessage
 
+	forward_MusicService_GetPlaylistSongs_0 = runtime.ForwardResponseMessage
+
 	forward_MusicService_GetAllSong_0 = runtime.ForwardResponseMessage
 
 	forward_MusicService_GetByIdSong_0 = runtime.ForwardResponseMessage
 
 	forward_MusicService_CreateSong_0 = runtime.ForwardResponseMessage
+
+	forward_MusicService_SongGetNext_0 = runtime.ForwardResponseMessage
+
+	forward_MusicService_SongGetPrev_0 = runtime.ForwardResponseMessage
 
 	forward_MusicService_UpdateSong_0 = runtime.ForwardResponseMessage
 

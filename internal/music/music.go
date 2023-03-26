@@ -9,7 +9,6 @@ import (
 type PostgresImpl interface {
 	PlaylistGetAll() ([]models.Playlist, error)
 	PlaylistGetByID(id uint) (*models.Playlist, error)
-	PlaylistGetSongs(playlist *models.Playlist) ([]models.Song, error)
 	PlaylistAddSong(playlist *models.Playlist, song *models.Song) error
 	PlaylistDeleteSong(playlist *models.Playlist, song *models.Song) error
 	PlaylistCreate(playlist *models.Playlist) error

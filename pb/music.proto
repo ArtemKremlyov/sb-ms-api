@@ -32,15 +32,13 @@ message GetByIdPlaylistRequest{
 
 message CreatePlaylistRequest{
   string    Name = 1 [(validate.rules).string.min_len = 1];
-  int64    CreatedAt = 2 [(validate.rules).message.required = true];
-  int64 UpdatedAt =  3 [(validate.rules).message.required = true];
+  string Description = 2 [(validate.rules).string.min_len = 1];
 }
 
 message UpdatePlaylistRequest{
   uint64 ID = 1 [(validate.rules).uint64.gt =0];
   string    Name = 2 [(validate.rules).string.min_len = 1];
-  int64    CreatedAt = 3 [(validate.rules).message.required = true];
-  int64 UpdatedAt =  4 [(validate.rules).message.required = true];
+  string Description = 3 [(validate.rules).string.min_len = 1];
 }
 
 message DeletePlaylistRequest{
@@ -48,7 +46,7 @@ message DeletePlaylistRequest{
 }
 
 message GetPlaylistSongsRequest{
-  repeated Song data = 1;
+  uint64 PlaylistID = 1 [(validate.rules).uint64.gt = 0];
 }
 
 // Song
@@ -57,8 +55,6 @@ message Song {
   string    Name = 2 [(validate.rules).string.min_len = 1];
   string Description = 3 [(validate.rules).string.min_len = 1];
   google.protobuf.Duration Duration = 4 [(validate.rules).message.required = true];
-  int64    CreatedAt = 5 [(validate.rules).message.required = true];
-  int64 UpdatedAt =  6 [(validate.rules).message.required = true];
 }
 
 message SongAll {
@@ -81,10 +77,8 @@ message GetByIdSongRequest{
 
 message CreateSongRequest{
   string    Name = 1 [(validate.rules).string.min_len = 1];
-  int64    CreatedAt = 2 [(validate.rules).message.required = true];
-  string Description = 3 [(validate.rules).string.min_len = 1];
-  google.protobuf.Duration Duration = 4 [(validate.rules).message.required = true];
-  int64 UpdatedAt =  5 [(validate.rules).message.required = true];
+  string Description = 2 [(validate.rules).string.min_len = 1];
+  google.protobuf.Duration Duration = 3 [(validate.rules).message.required = true];
 }
 
 message UpdateSongRequest{
@@ -92,8 +86,6 @@ message UpdateSongRequest{
   string    Name = 2 [(validate.rules).string.min_len = 1];
   string Description = 3 [(validate.rules).string.min_len = 1];
   google.protobuf.Duration Duration = 4 [(validate.rules).message.required = true];
-  int64    CreatedAt = 5 [(validate.rules).message.required = true];
-  int64 UpdatedAt =  6 [(validate.rules).message.required = true];
 }
 
 message DeleteSongRequest{
@@ -120,7 +112,7 @@ service MusicService {
   rpc DeletePlaylist(DeletePlaylistRequest) returns(google.protobuf.Empty);
 
   // Получает список песен плейлиста
-  rpc GetPlaylistSongs(GetPlaylistSongsRequest) returns(PlaylistAll);
+  rpc GetPlaylistSongs(GetPlaylistSongsRequest) returns(SongAll);
 
 
 

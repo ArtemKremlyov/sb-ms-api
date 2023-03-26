@@ -53,7 +53,7 @@ type MusicServiceClient interface {
 	// Удаляет плейлист
 	DeletePlaylist(ctx context.Context, in *DeletePlaylistRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Получает список песен плейлиста
-	GetPlaylistSongs(ctx context.Context, in *GetPlaylistSongsRequest, opts ...grpc.CallOption) (*PlaylistAll, error)
+	GetPlaylistSongs(ctx context.Context, in *GetPlaylistSongsRequest, opts ...grpc.CallOption) (*SongAll, error)
 	// Возвращает список песен
 	GetAllSong(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SongAll, error)
 	// Получает песню по Id
@@ -132,8 +132,8 @@ func (c *musicServiceClient) DeletePlaylist(ctx context.Context, in *DeletePlayl
 	return out, nil
 }
 
-func (c *musicServiceClient) GetPlaylistSongs(ctx context.Context, in *GetPlaylistSongsRequest, opts ...grpc.CallOption) (*PlaylistAll, error) {
-	out := new(PlaylistAll)
+func (c *musicServiceClient) GetPlaylistSongs(ctx context.Context, in *GetPlaylistSongsRequest, opts ...grpc.CallOption) (*SongAll, error) {
+	out := new(SongAll)
 	err := c.cc.Invoke(ctx, MusicService_GetPlaylistSongs_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -221,7 +221,7 @@ type MusicServiceServer interface {
 	// Удаляет плейлист
 	DeletePlaylist(context.Context, *DeletePlaylistRequest) (*emptypb.Empty, error)
 	// Получает список песен плейлиста
-	GetPlaylistSongs(context.Context, *GetPlaylistSongsRequest) (*PlaylistAll, error)
+	GetPlaylistSongs(context.Context, *GetPlaylistSongsRequest) (*SongAll, error)
 	// Возвращает список песен
 	GetAllSong(context.Context, *emptypb.Empty) (*SongAll, error)
 	// Получает песню по Id
@@ -261,7 +261,7 @@ func (UnimplementedMusicServiceServer) UpdatePlaylist(context.Context, *UpdatePl
 func (UnimplementedMusicServiceServer) DeletePlaylist(context.Context, *DeletePlaylistRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeletePlaylist not implemented")
 }
-func (UnimplementedMusicServiceServer) GetPlaylistSongs(context.Context, *GetPlaylistSongsRequest) (*PlaylistAll, error) {
+func (UnimplementedMusicServiceServer) GetPlaylistSongs(context.Context, *GetPlaylistSongsRequest) (*SongAll, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPlaylistSongs not implemented")
 }
 func (UnimplementedMusicServiceServer) GetAllSong(context.Context, *emptypb.Empty) (*SongAll, error) {

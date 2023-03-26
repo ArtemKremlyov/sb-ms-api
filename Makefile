@@ -30,7 +30,8 @@ docker-logs: docker-build-if-nex
 	@docker-compose -f docker-compose.yml logs
 
 mock:
-	@cd ./internal/mock
+	@go generate find ./internal/mock ! -name gen.go -type f -o -type d -maxdepth 1 -mindepth 1 -exec rm -rf {} +
+	@go generate go run github.com/vektra/mockery/v2 --all --keeptree --case underscore --dir "./internal" --output "./internal" --outpkg "mock" --exported --with-expecter
 
 protogen:
 	@cd ./pb; bash ./generate

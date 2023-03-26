@@ -297,60 +297,6 @@ func (_c *PostgresImpl_PlaylistGetByID_Call) RunAndReturn(run func(uint) (*model
 	return _c
 }
 
-// PlaylistGetSongs provides a mock function with given fields: playlist
-func (_m *PostgresImpl) PlaylistGetSongs(playlist *models.Playlist) ([]models.Song, error) {
-	ret := _m.Called(playlist)
-
-	var r0 []models.Song
-	var r1 error
-	if rf, ok := ret.Get(0).(func(*models.Playlist) ([]models.Song, error)); ok {
-		return rf(playlist)
-	}
-	if rf, ok := ret.Get(0).(func(*models.Playlist) []models.Song); ok {
-		r0 = rf(playlist)
-	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]models.Song)
-		}
-	}
-
-	if rf, ok := ret.Get(1).(func(*models.Playlist) error); ok {
-		r1 = rf(playlist)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
-}
-
-// PostgresImpl_PlaylistGetSongs_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'PlaylistGetSongs'
-type PostgresImpl_PlaylistGetSongs_Call struct {
-	*mock.Call
-}
-
-// PlaylistGetSongs is a helper method to define mock.On call
-//   - playlist *models.Playlist
-func (_e *PostgresImpl_Expecter) PlaylistGetSongs(playlist interface{}) *PostgresImpl_PlaylistGetSongs_Call {
-	return &PostgresImpl_PlaylistGetSongs_Call{Call: _e.mock.On("PlaylistGetSongs", playlist)}
-}
-
-func (_c *PostgresImpl_PlaylistGetSongs_Call) Run(run func(playlist *models.Playlist)) *PostgresImpl_PlaylistGetSongs_Call {
-	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*models.Playlist))
-	})
-	return _c
-}
-
-func (_c *PostgresImpl_PlaylistGetSongs_Call) Return(_a0 []models.Song, _a1 error) *PostgresImpl_PlaylistGetSongs_Call {
-	_c.Call.Return(_a0, _a1)
-	return _c
-}
-
-func (_c *PostgresImpl_PlaylistGetSongs_Call) RunAndReturn(run func(*models.Playlist) ([]models.Song, error)) *PostgresImpl_PlaylistGetSongs_Call {
-	_c.Call.Return(run)
-	return _c
-}
-
 // PlaylistUpdate provides a mock function with given fields: playlist
 func (_m *PostgresImpl) PlaylistUpdate(playlist *models.Playlist) error {
 	ret := _m.Called(playlist)

@@ -246,6 +246,23 @@ func (g *Server) UpdateSong(ctx context.Context, req *pb.UpdateSongRequest) (*pb
 	}, err
 }
 
+// Меняет состояние `playing` в песне
+func (g *Server) ChangePlayingSong(ctx context.Context, req *pb.ChangePlayingSongRequest) (*emptypb.Empty, error) {
+	pl, err := g.music.GetSongByID(uint(req.ID))
+	if err != nil {
+		return nil, err
+	}
+
+	pl.Playing = req.Playing
+
+	err = g.music.UpdateSong(pl)
+	if err != nil {
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
+}
+
 // Получает следующую песню
 func (g *Server) SongGetNext(ctx context.Context, req *pb.SongGetNextRequest) (*pb.Song, error) {
 	pl, err := g.music.GetPlaylistByID(uint(req.PlaylistID))

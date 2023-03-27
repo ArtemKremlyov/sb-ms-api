@@ -20,20 +20,21 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	MusicService_GetAllPlaylist_FullMethodName   = "/music.MusicService/GetAllPlaylist"
-	MusicService_PlaylistAddSong_FullMethodName  = "/music.MusicService/PlaylistAddSong"
-	MusicService_GetByIdPlaylist_FullMethodName  = "/music.MusicService/GetByIdPlaylist"
-	MusicService_CreatePlaylist_FullMethodName   = "/music.MusicService/CreatePlaylist"
-	MusicService_UpdatePlaylist_FullMethodName   = "/music.MusicService/UpdatePlaylist"
-	MusicService_DeletePlaylist_FullMethodName   = "/music.MusicService/DeletePlaylist"
-	MusicService_GetPlaylistSongs_FullMethodName = "/music.MusicService/GetPlaylistSongs"
-	MusicService_GetAllSong_FullMethodName       = "/music.MusicService/GetAllSong"
-	MusicService_GetByIdSong_FullMethodName      = "/music.MusicService/GetByIdSong"
-	MusicService_CreateSong_FullMethodName       = "/music.MusicService/CreateSong"
-	MusicService_SongGetNext_FullMethodName      = "/music.MusicService/SongGetNext"
-	MusicService_SongGetPrev_FullMethodName      = "/music.MusicService/SongGetPrev"
-	MusicService_UpdateSong_FullMethodName       = "/music.MusicService/UpdateSong"
-	MusicService_DeleteSong_FullMethodName       = "/music.MusicService/DeleteSong"
+	MusicService_GetAllPlaylist_FullMethodName    = "/music.MusicService/GetAllPlaylist"
+	MusicService_PlaylistAddSong_FullMethodName   = "/music.MusicService/PlaylistAddSong"
+	MusicService_GetByIdPlaylist_FullMethodName   = "/music.MusicService/GetByIdPlaylist"
+	MusicService_CreatePlaylist_FullMethodName    = "/music.MusicService/CreatePlaylist"
+	MusicService_UpdatePlaylist_FullMethodName    = "/music.MusicService/UpdatePlaylist"
+	MusicService_DeletePlaylist_FullMethodName    = "/music.MusicService/DeletePlaylist"
+	MusicService_GetPlaylistSongs_FullMethodName  = "/music.MusicService/GetPlaylistSongs"
+	MusicService_GetAllSong_FullMethodName        = "/music.MusicService/GetAllSong"
+	MusicService_GetByIdSong_FullMethodName       = "/music.MusicService/GetByIdSong"
+	MusicService_CreateSong_FullMethodName        = "/music.MusicService/CreateSong"
+	MusicService_ChangePlayingSong_FullMethodName = "/music.MusicService/ChangePlayingSong"
+	MusicService_SongGetNext_FullMethodName       = "/music.MusicService/SongGetNext"
+	MusicService_SongGetPrev_FullMethodName       = "/music.MusicService/SongGetPrev"
+	MusicService_UpdateSong_FullMethodName        = "/music.MusicService/UpdateSong"
+	MusicService_DeleteSong_FullMethodName        = "/music.MusicService/DeleteSong"
 )
 
 // MusicServiceClient is the client API for MusicService service.
@@ -60,6 +61,8 @@ type MusicServiceClient interface {
 	GetByIdSong(ctx context.Context, in *GetByIdSongRequest, opts ...grpc.CallOption) (*Song, error)
 	// Создает песню
 	CreateSong(ctx context.Context, in *CreateSongRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// Меняет состояние `playing` в песне
+	ChangePlayingSong(ctx context.Context, in *ChangePlayingSongRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Получаем следующую песню
 	SongGetNext(ctx context.Context, in *SongGetNextRequest, opts ...grpc.CallOption) (*Song, error)
 	// Получаем предыдущую песню
@@ -168,6 +171,15 @@ func (c *musicServiceClient) CreateSong(ctx context.Context, in *CreateSongReque
 	return out, nil
 }
 
+func (c *musicServiceClient) ChangePlayingSong(ctx context.Context, in *ChangePlayingSongRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, MusicService_ChangePlayingSong_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *musicServiceClient) SongGetNext(ctx context.Context, in *SongGetNextRequest, opts ...grpc.CallOption) (*Song, error) {
 	out := new(Song)
 	err := c.cc.Invoke(ctx, MusicService_SongGetNext_FullMethodName, in, out, opts...)
@@ -228,6 +240,8 @@ type MusicServiceServer interface {
 	GetByIdSong(context.Context, *GetByIdSongRequest) (*Song, error)
 	// Создает песню
 	CreateSong(context.Context, *CreateSongRequest) (*emptypb.Empty, error)
+	// Меняет состояние `playing` в песне
+	ChangePlayingSong(context.Context, *ChangePlayingSongRequest) (*emptypb.Empty, error)
 	// Получаем следующую песню
 	SongGetNext(context.Context, *SongGetNextRequest) (*Song, error)
 	// Получаем предыдущую песню
@@ -272,6 +286,9 @@ func (UnimplementedMusicServiceServer) GetByIdSong(context.Context, *GetByIdSong
 }
 func (UnimplementedMusicServiceServer) CreateSong(context.Context, *CreateSongRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSong not implemented")
+}
+func (UnimplementedMusicServiceServer) ChangePlayingSong(context.Context, *ChangePlayingSongRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangePlayingSong not implemented")
 }
 func (UnimplementedMusicServiceServer) SongGetNext(context.Context, *SongGetNextRequest) (*Song, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SongGetNext not implemented")
@@ -478,6 +495,24 @@ func _MusicService_CreateSong_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MusicService_ChangePlayingSong_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChangePlayingSongRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MusicServiceServer).ChangePlayingSong(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MusicService_ChangePlayingSong_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MusicServiceServer).ChangePlayingSong(ctx, req.(*ChangePlayingSongRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _MusicService_SongGetNext_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SongGetNextRequest)
 	if err := dec(in); err != nil {
@@ -596,6 +631,10 @@ var MusicService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateSong",
 			Handler:    _MusicService_CreateSong_Handler,
+		},
+		{
+			MethodName: "ChangePlayingSong",
+			Handler:    _MusicService_ChangePlayingSong_Handler,
 		},
 		{
 			MethodName: "SongGetNext",

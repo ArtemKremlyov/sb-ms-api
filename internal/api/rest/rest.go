@@ -67,6 +67,7 @@ func (r REST) Register(router *gin.Engine) *gin.Engine {
 				songs.GET("/:songId", r.SongGetById)
 				songs.POST("/:songId/getNextSong", r.SongGetNext)
 				songs.POST("/:songId/getPrevSong", r.SongGetPrev)
+				songs.POST("/:songId/changePlayingState", r.SongChangePlaying)
 				songs.PUT("/:songId", r.SongUpdate)
 				songs.DELETE("/:songId", r.SongDelete)
 			}
@@ -427,6 +428,49 @@ func (r REST) SongGetPrev(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, prevSong)
+}
+
+func (r REST) SongChangePlaying(ctx *gin.Context) {
+	var songChangePlaying SongChangePlayingRequest
+	id, err := strconv.Atoi(ctx.Param("songId"))
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": "invalid song id",
+		})
+		return
+	}
+
+	song, err := r.music.GetSongByID(uint(id))
+
+	if err != nil {
+		if errors.As(err, &gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, gin.H{})
+		} else {
+			log.Printf("failed to get songById: %v", err)
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"error": "failed to get song by id: server error",
+			})
+		}
+		return
+	}
+
+	song.Playing = songChangePlaying.Playing
+
+	err = r.music.UpdateSong(song)
+	if err != nil {
+		if errors.As(err, &gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "song not found"})
+		} else {
+			log.Printf("failed to update song: %v", err)
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"error": "failed to update song",
+			})
+		}
+
+		return
+	}
+
 }
 
 func (r REST) SongCreate(ctx *gin.Context) {

@@ -88,6 +88,11 @@ message UpdateSongRequest{
   google.protobuf.Duration Duration = 4 [(validate.rules).message.required = true];
 }
 
+message ChangePlayingSongRequest{
+  uint64 ID = 1 [(validate.rules).uint64.gt =0];
+  bool Playing = 2;
+}
+
 message DeleteSongRequest{
   uint64 ID = 1 [(validate.rules).uint64.gt =0];
 }
@@ -124,6 +129,9 @@ service MusicService {
 
   // Создает песню
   rpc CreateSong(CreateSongRequest) returns(google.protobuf.Empty);
+
+  // Меняет состояние `playing` в песне
+  rpc ChangePlayingSong(ChangePlayingSongRequest) returns(google.protobuf.Empty);
 
   // Получаем следующую песню
   rpc SongGetNext(SongGetNextRequest) returns(Song);
